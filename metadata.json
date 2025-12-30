@@ -1,0 +1,5 @@
+{
+  "name": "TrackingBolt",
+  "description": "An interactive learning platform for GA4, GTM, and Meta Pixel implementation, inspired by SQLBolt.",
+  "requestFramePermissions": []
+}
