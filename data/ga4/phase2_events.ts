@@ -106,44 +106,52 @@ GA4는 매우 유연합니다. 여러분이 \`my_super_click\`이라고 보내�
   {
     id: 'ga4-p2-interaction',
     track: 'GA4',
-    title: '8. 반응형 코드 작성 (Event Handler)',
+    title: '8. 함수로 감싸기 (Event Handler)',
     description: `
 ### 📘 개념 학습: 실행 시점의 차이
-지금까지 작성한 코드는 페이지가 로드되자마자 실행되었습니다.
-하지만 실제 웹사이트에서는 **사용자가 버튼을 클릭하는 순간**에 코드가 실행되어야 합니다.
+실제 웹사이트에서는 코드가 즉시 실행되는 것이 아니라, **사용자가 버튼을 클릭하는 순간**에 실행되어야 합니다.
+이를 위해 코드를 함수(Function) 안에 가두어야 합니다.
 
-이를 위해 코드를 함수(Function) 안에 가두고, 버튼이 클릭될 때 그 함수를 호출해야 합니다.
-우측 미리보기 화면의 **[장바구니 담기]** 버튼은 클릭 시 \`handleCartClick()\` 함수를 찾도록 설계되어 있습니다.
+\`\`\`javascript
+// 함수 정의 (실행되지 않음)
+window.handleCartClick = function() {
+  gtag('event', ...);
+}
+
+// 함수 호출 (이때 실행됨)
+handleCartClick();
+\`\`\`
 
 ---
 
 ### 🎯 실습 가이드
-1. \`window.handleCartClick\` 함수를 완성하세요.
-2. 코드를 실행하고, **우측 가상 브라우저의 [장바구니 담기] 버튼을 직접 클릭**해야 검증됩니다.
+1. \`window.handleCartClick\` 함수를 정의하고 내부에 트래킹 코드를 작성하세요.
+2. 코드 맨 아래에서 **함수를 직접 호출(\`handleCartClick()\`)**하여 클릭 상황을 시뮬레이션하세요.
     `,
-    preCode: `<!-- 버튼 HTML 예시 -->
-<button onclick="window.handleCartClick()">장바구니 담기</button>`,
     initialCode: `  gtag('config', 'G-TRACK-DEMO');
 
   // 1. 함수 정의하기
   window.handleCartClick = function() {
-    console.log("버튼 클릭됨!");
+    console.log("장바구니 버튼 클릭 함수 실행됨");
+    // 여기에 gtag 코드 작성: 'add_to_cart', currency: 'KRW', value: 59000
     
-    // 2. 여기에 gtag 코드 작성
-    
-  };`,
+  };
+
+  // 2. 테스트를 위해 함수 직접 호출하기
+  handleCartClick();
+  `,
     tasks: [
       {
         id: 'step3_click',
-        description: "버튼 클릭 시 'add_to_cart' 이벤트 전송하기",
+        description: "함수 내부에서 'add_to_cart' 이벤트 전송",
         validate: (events) => {
           const cart = findGa4Event(events, 'add_to_cart');
           if (!cart) {
-             return { passed: false, message: "아직 이벤트가 감지되지 않았습니다. 코드를 실행하고 버튼을 클릭해보세요." };
+             return { passed: false, message: "이벤트가 감지되지 않았습니다. handleCartClick()을 호출했나요?" };
           }
           return { 
             passed: true, 
-            message: "성공! 사용자의 행동에 반응했습니다." 
+            message: "성공! 함수를 통해 이벤트가 전송되었습니다." 
           };
         }
       }
@@ -155,7 +163,9 @@ GA4는 매우 유연합니다. 여러분이 \`my_super_click\`이라고 보내�
       currency: 'KRW',
       value: 59000
     });
-  };`
+  };
+
+  handleCartClick();`
   },
   {
     id: 'ga4-p2-standard-event',
@@ -163,41 +173,43 @@ GA4는 매우 유연합니다. 여러분이 \`my_super_click\`이라고 보내�
     title: '9. 구글이 좋아하는 표준 (Standard Events)',
     description: `
 ### 📘 개념 학습: 표준어 쓰기
-Lesson 6에서 \`click_main_banner\` 같은 커스텀 이벤트를 만들었습니다.
-하지만 '회원가입', '로그인', '구매' 처럼 모든 사이트에 공통으로 존재하는 행동들은 구글이 미리 정해둔 **표준 이름(Standard Event)**을 쓰는 것이 유리합니다.
-
-**표준 이벤트를 쓰면 좋은 점:**
-*   GA4가 "아, 이거 회원가입이네?"라고 바로 알아듣습니다.
-*   별도의 설정 없이 보고서에 예쁘게 분류됩니다.
-*   구글의 머신러닝이 데이터를 더 잘 학습합니다.
+'회원가입', '로그인' 처럼 공통적인 행동들은 구글이 정해둔 **표준 이름(Standard Event)**을 써야 합니다.
+GA4가 데이터를 더 잘 이해하고 보고서에 자동으로 분류해줍니다.
 
 **주요 표준 이벤트:** \`sign_up\`, \`login\`, \`purchase\`, \`share\`, \`search\`
 
 ---
 
 ### 🎯 실습 가이드
-우측 상단 **[회원가입]** 링크를 클릭했을 때 실행될 코드입니다.
-표준 이름과 파라미터를 사용하여 코드를 작성하세요.
+회원가입 버튼을 눌렀을 때 실행될 함수를 만들고 테스트하세요.
+
+1. 함수명: \`handleSignupClick\`
+2. 표준 이벤트: \`sign_up\`
+3. 파라미터: \`method: 'email'\`
+4. **마지막에 함수 호출 필수!**
     `,
-    preCode: `<button onclick="window.handleSignupClick()">회원가입</button>`,
     initialCode: `  gtag('config', 'G-TRACK-DEMO');
 
   window.handleSignupClick = function() {
-    // 커스텀 이름(join_done 등) 대신 표준 이름을 사용하세요.
+    // 여기에 표준 이벤트 작성
     
-  };`,
+  };
+
+  // 테스트 실행
+  handleSignupClick();
+  `,
     tasks: [
       {
         id: 'std_evt_name',
-        description: "회원가입 클릭 시 표준 이름 'sign_up' 전송하기",
+        description: "표준 이름 'sign_up' 전송",
         validate: (events) => {
           const evt = findGa4Event(events, 'sign_up');
-          return { passed: !!evt, message: evt ? "표준 이벤트 감지됨" : "우측 상단 '회원가입'을 클릭하세요." };
+          return { passed: !!evt, message: evt ? "표준 이벤트 감지됨" : "함수를 정의하고 호출(call)하세요." };
         }
       },
       {
         id: 'std_evt_param',
-        description: "가입 방식 파라미터 포함: method='email'",
+        description: "파라미터 method='email'",
         validate: (events) => {
            const evt = findGa4Event(events, 'sign_up');
            return { 
@@ -213,7 +225,9 @@ Lesson 6에서 \`click_main_banner\` 같은 커스텀 이벤트를 만들었습�
     gtag('event', 'sign_up', {
       method: 'email'
     });
-  };`
+  };
+  
+  handleSignupClick();`
   },
   {
     id: 'ga4-p2-debug-mode',
@@ -221,20 +235,15 @@ Lesson 6에서 \`click_main_banner\` 같은 커스텀 이벤트를 만들었습�
     title: '10. 개발자의 안전장치 (Debug Mode)',
     description: `
 ### 📘 개념 학습: 데이터 오염 방지
-여러분이 개발 중에 테스트 삼아 보낸 "100억 원 구매" 데이터가 실제 경영 보고서에 섞이면 어떤 일이 벌어질까요?
-회사의 월간 매출 데이터 신뢰도가 바닥으로 떨어지게 됩니다.
-
-이를 막기 위해 GA4는 **DebugView**라는 격리 구역을 제공합니다.
-이벤트 파라미터에 \`debug_mode: true\`를 추가하면, 해당 데이터는 **실제 보고서(Reports) 집계에서 제외**되고 오직 개발자용 디버그 화면에만 나타납니다.
-
-**💡 실무 팁**: 
-개발 환경(localhost)에서는 항상 이 옵션이 켜지도록 코드를 짜는 것이 좋습니다.
+개발 중에 발생시킨 테스트 데이터가 실제 매출 보고서에 섞이면 안 됩니다.
+GA4는 **DebugView**라는 격리 구역을 제공합니다.
+이벤트 파라미터에 \`debug_mode: true\`를 추가하면, 실제 보고서 집계에서 제외됩니다.
 
 ---
 
 ### 🎯 실습 가이드
 안전한 테스트를 위해 디버그 모드 옵션을 활성화하여 이벤트를 전송하세요.
-(이벤트 이름은 자유롭게 정해도 좋으나, \`test_event\`를 권장합니다.)
+(이벤트 이름: \`test_event\`)
     `,
     initialCode: `  gtag('config', 'G-TRACK-DEMO');
 
@@ -245,9 +254,8 @@ Lesson 6에서 \`click_main_banner\` 같은 커스텀 이벤트를 만들었습�
     tasks: [
       {
         id: 'debug_check',
-        description: "debug_mode: true 파라미터가 포함되어야 함",
+        description: "debug_mode: true 파라미터 포함",
         validate: (events) => {
-          // Find any event with debug_mode: true
           const debugEvent = events.find(e => 
             e.type === 'GA4' && 
             e.command === 'event' && 
