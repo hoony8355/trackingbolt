@@ -33,6 +33,16 @@ GA4는 같은 영수증 번호(\`transaction_id\`)가 또 들어오면 "아, 아
 
   // purchase 이벤트를 작성하고 필수값(transaction_id)을 포함하세요.
   `,
+    faqs: [
+      {
+        question: "주문번호는 어떤 값을 써야 하나요?",
+        answer: "실제 쇼핑몰 DB에 저장된 주문 번호(Order ID)를 그대로 사용하는 것이 가장 좋습니다. 나중에 실제 매출과 GA4 데이터를 대조(Cross-check)할 때 기준이 됩니다."
+      },
+      {
+        question: "중복 제거는 실시간으로 되나요?",
+        answer: "아니요, 보고서 처리 과정에서 중복이 제거되므로 실시간 뷰나 BigQuery 원본 데이터에는 중복된 로그가 보일 수 있습니다."
+      }
+    ],
     tasks: [
       {
         id: 'step16_tid',
@@ -88,6 +98,16 @@ GA4는 같은 영수증 번호(\`transaction_id\`)가 또 들어오면 "아, 아
     initialCode: `  // 두 개의 상품을 구매하는 purchase 이벤트를 작성하세요.
   // items 배열 안에 객체가 2개 있어야 합니다.
   `,
+    faqs: [
+      {
+        question: "배송비나 세금은 어디에 적나요?",
+        answer: "`value`는 최종 결제 금액이므로 배송비를 포함할지 말지 정책을 정해야 합니다. 별도로 `shipping: 3000`, `tax: 500` 파라미터를 이벤트 최상위에 추가할 수 있습니다."
+      },
+      {
+        question: "할인 쿠폰은요?",
+        answer: "전체 주문 할인은 `coupon: 'SUMMER_SALE'`을 최상위에, 개별 상품 할인은 `items` 배열 안의 각 객체에 `discount: 1000` 형태로 적습니다."
+      }
+    ],
     tasks: [
       {
         id: 'step17_val',

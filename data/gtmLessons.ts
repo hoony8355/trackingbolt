@@ -30,6 +30,16 @@ GTM 학습을 시작하는 의미로, \`gtm_tutorial_start\`라는 이벤트를 
 window.dataLayer = window.dataLayer || [];`,
     initialCode: `// dataLayer.push 명령어를 사용하여 이벤트를 보내보세요.`,
     postCode: ``,
+    faqs: [
+      {
+        question: "GA4랑 GTM은 다른 건가요?",
+        answer: "네, 다릅니다. GA4는 데이터를 저장하고 분석하는 '분석 도구'이고, GTM은 데이터를 GA4나 페이스북 등으로 쏴주는 '배달부(태그 관리 도구)'입니다."
+      },
+      {
+        question: "GTM을 쓰면 개발자가 필요 없나요?",
+        answer: "아닙니다. '버튼 클릭' 같은 단순한 건 GTM만으로 가능하지만, 구매 금액이나 회원 정보 같은 핵심 데이터를 GTM으로 보내주는(dataLayer push) 작업은 개발자가 해줘야 합니다."
+      }
+    ],
     tasks: [
       {
         id: 't1',
@@ -82,6 +92,16 @@ GTM에게 이 사실을 알려주세요.
     `,
     initialCode: `// 회원가입 완료 정보를 GTM으로 밀어넣으세요(push).
 `,
+    faqs: [
+      {
+        question: "이름을 꼭 'dataLayer'로 해야 하나요?",
+        answer: "변경할 수 있지만, GTM 기본 설정과 전 세계적인 표준이 'dataLayer'이므로 그대로 사용하는 것을 강력히 권장합니다."
+      },
+      {
+        question: "push 순서가 중요한가요?",
+        answer: "네, 중요합니다. GTM 컨테이너 스크립트가 로드되기 전에 push 된 데이터도 유실되지 않고 처리되지만, 이벤트가 발생한 시간 순서대로 처리됩니다."
+      }
+    ],
     tasks: [
        {
         id: 't1',
@@ -149,6 +169,16 @@ dataLayer.push({
     `,
     initialCode: `// 장바구니 담기 이벤트를 구현하세요. (ecommerce 구조 주의)
 `,
+    faqs: [
+      {
+        question: "GA4랑 GTM의 전자상거래 문법이 다른가요?",
+        answer: "비슷하지만 다릅니다. GTM은 `ecommerce`라는 래퍼(Wrapper) 객체가 필요하고, 가끔 `null`로 초기화하는 과정(Clear)이 필요할 때도 있습니다."
+      },
+      {
+        question: "GTM에 미리보기(Preview) 기능이 있나요?",
+        answer: "네, GTM의 꽃은 '미리보기'입니다. 여러분이 코드를 작성(Push)하면 마케터는 GTM 미리보기 창에서 데이터가 잘 들어왔는지 확인하고 태그를 발행합니다."
+      }
+    ],
     tasks: [
       {
         id: 't1',

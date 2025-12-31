@@ -28,6 +28,16 @@ GA4는 \`sign_up\` 이벤트에 \`method\`라는 꼬리표를 붙이기를 강�
 <button onclick="handleSignupClick()">카카오로 시작하기</button>`,
     initialCode: `  // 회원가입 함수와 이벤트를 작성하세요.
   `,
+    faqs: [
+      {
+        question: "method 값은 한글로 보내도 되나요?",
+        answer: "가능합니다. 하지만 '카카오', 'Kakao', 'kakao' 처럼 같은 의미인데 다르게 적히지 않도록 내부적으로 통일된 영문 코드를 사용하는 것을 권장합니다."
+      },
+      {
+        question: "sign_up 이벤트는 언제 보내야 하나요? 버튼 클릭? 완료 페이지?",
+        answer: "버튼 클릭 시점보다는, 실제 가입 처리가 DB에서 완료되고 나서(예: '가입 환영합니다' 페이지) 보내는 것이 정확합니다."
+      }
+    ],
     tasks: [
       {
         id: 'step11_event',
@@ -80,6 +90,16 @@ GA4는 \`sign_up\` 이벤트에 \`method\`라는 꼬리표를 붙이기를 강�
 
   // 로그인 이벤트를 전송하세요.
   `,
+    faqs: [
+      {
+        question: "자동 로그인(세션 유지)도 추적해야 하나요?",
+        answer: "일반적으로 자동 로그인은 추적하지 않습니다. 사용자가 의도를 가지고 '로그인' 행동을 했을 때만 집계하는 것이 '활성 사용자' 파악에 더 도움이 됩니다."
+      },
+      {
+        question: "User ID 기능과는 다른가요?",
+        answer: "네, login 이벤트는 '행동'을 세는 것이고, User ID는 '사용자 식별'을 위한 기능입니다. 보통 로그인 성공 시점에 두 가지(User ID 설정 + login 이벤트 전송)를 함께 처리합니다."
+      }
+    ],
     tasks: [
       {
         id: 'step12_event',
@@ -129,6 +149,16 @@ GA4는 \`sign_up\` 이벤트에 \`method\`라는 꼬리표를 붙이기를 강�
 
   // 리드 생성 이벤트를 작성하세요.
   `,
+    faqs: [
+      {
+        question: "실제 돈을 번 게 아닌데 value를 넣어도 되나요?",
+        answer: "네, 이것을 '기여 가치'라고 합니다. 광고비 1만원을 써서 5만원 가치의 리드를 얻었다면 ROAS(광고수익률)는 500%라고 분석할 수 있습니다."
+      },
+      {
+        question: "value 값을 0으로 보내면 안 되나요?",
+        answer: "0으로 보내면 GA4가 이를 '가치 없는 행동'으로 간주하여 광고 최적화 타겟에서 제외할 수 있습니다. 최소 1이라도 보내는 것이 좋습니다."
+      }
+    ],
     tasks: [
       {
         id: 'step13_event',
@@ -184,6 +214,16 @@ GA4는 상품 정보를 담을 때 \`items\`라는 전용 바구니(배열)를 �
 
   // 상품 조회(view_item) 이벤트를 작성하고, items 배열을 완성하세요.
   `,
+    faqs: [
+      {
+        question: "item_id와 item_name 둘 다 필요한가요?",
+        answer: "둘 중 하나만 있어도 되지만, ID는 고유성을 보장하고 Name은 가독성을 위해 둘 다 넣는 것을 강력히 추천합니다."
+      },
+      {
+        question: "카테고리 정보도 넣을 수 있나요?",
+        answer: "네, `item_category`, `item_brand`, `item_variant`(옵션) 등의 표준 파라미터를 추가하면 더욱 정교한 분석이 가능합니다."
+      }
+    ],
     tasks: [
       {
         id: 'step14_array',
@@ -249,6 +289,16 @@ GA4는 "**어? 아까 본 거랑 다른 물건이네?**" 라고 생각합니다.
     initialCode: `  // 장바구니 버튼 클릭 함수(handleCartClick)를 작성하세요.
   // add_to_cart 이벤트와 items 정보를 포함해야 합니다.
   `,
+    faqs: [
+      {
+        question: "수량(quantity) 정보는 어디에 넣나요?",
+        answer: "`items` 배열 안의 각 상품 객체에 `quantity: 2` 와 같이 포함시킵니다. 전체 이벤트의 value 값은 (단가 x 수량)으로 계산해서 보내야 합니다."
+      },
+      {
+        question: "옵션(사이즈/색상)이 다르면 다른 상품인가요?",
+        answer: "보통은 같은 `item_id`를 쓰고 `item_variant` 속성에 'Red/L'과 같이 옵션을 적어서 구분합니다. SKU 단위로 관리한다면 ID 자체를 다르게 쓸 수도 있습니다."
+      }
+    ],
     tasks: [
       {
         id: 'step15_click',

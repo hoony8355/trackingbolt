@@ -41,6 +41,16 @@ GA4에게 "**나 이제 공부 시작해!**" 라고 첫 인사를 건네봅시�
 </script>`,
     initialCode: `// 아래에 코드를 직접 입력하세요.`,
     postCode: ``,
+    faqs: [
+      {
+        question: "마케터가 코드를 꼭 알아야 하나요?",
+        answer: "직접 코딩을 하지 않더라도, 개발자에게 '어떤 데이터를 어떻게 수집해달라'고 정확히 요청하려면 기본 문법과 구조를 이해해야 합니다."
+      },
+      {
+        question: "GA4는 무료인가요?",
+        answer: "네, 대부분의 중소/중견 기업이 사용하는 표준 버전은 무료입니다. (엔터프라이즈급인 GA4 360은 유료입니다.)"
+      }
+    ],
     tasks: [
       {
         id: 'start_evt',
@@ -85,6 +95,16 @@ gtag('config', 'G-TRACK-DEMO');
   gtag('js', new Date());`,
     initialCode: `// 여기에 config 코드를 작성하세요.`,
     postCode: `</script>`,
+    faqs: [
+      {
+        question: "측정 ID(G-XXXX)는 어디서 확인하나요?",
+        answer: "GA4 관리자 페이지 > 데이터 스트림 설정 메뉴에서 확인할 수 있습니다. UA-로 시작하는 것은 구버전(Universal Analytics) ID이므로 주의하세요."
+      },
+      {
+        question: "이 코드는 웹사이트 어디에 넣어야 하나요?",
+        answer: "HTML의 <head> 태그 내에서도 가능한 가장 위쪽에 배치하는 것이 좋습니다. 그래야 방문자가 들어오자마자 데이터를 놓치지 않고 잡을 수 있습니다."
+      }
+    ],
     tasks: [
       {
         id: 'problem1',
@@ -128,6 +148,16 @@ gtag('config', 'G-TRACK-DEMO');
     references: [
       { label: "[GA4] 자동 수집 이벤트", url: "https://support.google.com/analytics/answer/9234069?hl=ko" }
     ],
+    faqs: [
+      {
+        question: "실제 사이트에서 데이터를 실시간으로 보려면 어떻게 하나요?",
+        answer: "GA4 보고서 메뉴의 '실시간(Realtime)' 탭이나, 설정 > DebugView 메뉴를 통해 내 행동이 찍히는지 확인할 수 있습니다."
+      },
+      {
+        question: "데이터가 바로바로 안 떠요.",
+        answer: "GA4 무료 버전은 데이터 처리에 지연이 발생할 수 있습니다. DebugView는 비교적 빠르지만(초 단위), 일반 보고서는 최대 24-48시간이 걸릴 수 있습니다."
+      }
+    ],
     tasks: [
       {
         id: 'problem1',
@@ -169,6 +199,16 @@ gtag('config', 'ID', {
 \`\`\`
     `,
     initialCode: `// 자동 페이지 뷰 수집을 끄는 옵션을 추가하여 config를 작성하세요.`,
+    faqs: [
+      {
+        question: "SPA(Single Page Application)가 뭔가요?",
+        answer: "React, Vue, Angular 등으로 만든 최신 웹사이트입니다. 페이지 이동 시 전체를 새로고침하지 않고 필요한 부분만 갈아끼우기 때문에 속도가 빠르지만, GA4 기본 설정으로는 페이지 변경을 감지하지 못합니다."
+      },
+      {
+        question: "그냥 '향상된 측정'의 페이지 변경 감지를 켜면 안 되나요?",
+        answer: "GA4 설정에서 '브라우저 방문 기록 이벤트를 기반으로 페이지 변경사항 변경'을 켜도 되지만, 개발자가 시점을 100% 통제하기 위해 자동 수집을 끄고 수동(Manual)으로 보내는 방식을 선호하기도 합니다."
+      }
+    ],
     tasks: [
       {
         id: 'problem1',
@@ -238,6 +278,16 @@ gtag('event', 'page_view', {
   `,
     references: [
       { label: "[GA4] 이벤트 정보", url: "https://support.google.com/analytics/answer/9322688?hl=ko" }
+    ],
+    faqs: [
+      {
+        question: "page_referrer가 무엇인가요?",
+        answer: "사용자가 이 페이지에 오기 직전에 머물렀던 주소입니다. 네이버 검색을 타고 왔는지, 인스타그램 광고를 보고 왔는지 분석할 때 필수적인 정보입니다."
+      },
+      {
+        question: "파라미터 순서가 중요한가요?",
+        answer: "아니요, 중괄호 {} 안에서는 순서가 상관없습니다. 쉼표(,)로 구분만 잘 해주시면 됩니다."
+      }
     ],
     tasks: [
       {
@@ -316,6 +366,16 @@ gtag('event', 'page_view', {
     initialCode: `  gtag('config', 'G-TRACK-DEMO', { send_page_view: false });
 
   // 변수를 사용하여 page_view 이벤트를 전송하세요.`,
+    faqs: [
+      {
+        question: "다른 유용한 변수들은 어떤 게 있나요?",
+        answer: "`location.pathname`(도메인을 제외한 경로), `document.referrer`(이전 페이지 주소) 등이 자주 사용됩니다."
+      },
+      {
+        question: "변수값이 비어있으면 어떻게 되나요?",
+        answer: "빈 문자열(\"\")이나 undefined로 전송됩니다. 이 경우 GA4 보고서에서 `(not set)`으로 표시될 수 있으므로, 개발 단계에서 값이 잘 들어오는지 확인해야 합니다."
+      }
+    ],
     tasks: [
       {
         id: 'problem1',

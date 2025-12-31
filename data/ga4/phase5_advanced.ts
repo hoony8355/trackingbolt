@@ -35,6 +35,16 @@ export const ga4Phase5: Lesson[] = [
 </script>`,
     initialCode: `  // if 조건문을 사용하여 안전하게 코드를 작성하세요.
   `,
+    faqs: [
+      {
+        question: "프론트엔드에서 막는 것만으로 충분한가요?",
+        answer: "아니요, 브라우저 환경은 변수가 많습니다. 가장 확실한 방법은 서버(백엔드)에서 GA4 Measurement Protocol을 사용해 결제 성공 신호를 직접 보내는 것입니다."
+      },
+      {
+        question: "console.log는 배포할 때 지워야 하나요?",
+        answer: "네, 불필요한 로그는 성능에 영향을 주거나 보안 정보를 노출할 수 있으므로, 실제 운영(Production) 환경에서는 제거하는 것이 좋습니다."
+      }
+    ],
     tasks: [
       {
         id: 'step24',
@@ -83,6 +93,12 @@ export const ga4Phase5: Lesson[] = [
 
   // 여기에 최종 코드를 작성하세요.
   `,
+    faqs: [
+      {
+        question: "데이터가 GA4와 내부 DB가 100% 일치할 수 있나요?",
+        answer: "현실적으로 어렵습니다. 사용자 브라우저의 광고 차단(AdBlock), 네트워크 오류 등으로 인해 통상 5~10% 정도의 오차는 발생할 수 있음을 감안해야 합니다."
+      }
+    ],
     tasks: [
       {
         id: 'final_basic',

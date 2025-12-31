@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Lesson, ValidationResult, TrackingEvent } from '../types';
 import CodeEditor from './CodeEditor';
 import ResultPanel from './ResultPanel';
 import { MockRuntime } from '../services/mockRuntime';
+import SEOHead from './SEOHead';
 
 interface LessonViewProps {
   lesson: Lesson;
@@ -79,8 +81,81 @@ const LessonView: React.FC<LessonViewProps> = ({ lesson, onComplete }) => {
     }
   };
 
+  // --- SEO & Schema Generation ---
+  const currentUrl = `https://www.trackingbolt.com/lesson/${lesson.id}`;
+  
+  // 1. Breadcrumb Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.trackingbolt.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": lesson.track,
+        "item": `https://www.trackingbolt.com/track/${lesson.track.toLowerCase()}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": lesson.title,
+        "item": currentUrl
+      }
+    ]
+  };
+
+  // 2. Article/Course Schema
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": lesson.title,
+    "description": `Learn how to implement ${lesson.track} tracking code: ${lesson.title}. Interactive coding exercise included.`,
+    "articleSection": lesson.track,
+    "educationalUse": "assignment",
+    "proficiencyLevel": "Beginner",
+    "author": {
+      "@type": "Organization",
+      "name": "TrackingBolt"
+    }
+  };
+
+  // 3. FAQ Schema
+  let faqSchema = null;
+  if (lesson.faqs && lesson.faqs.length > 0) {
+    faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": lesson.faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    };
+  }
+
+  // Combine schemas
+  const combinedSchema = [breadcrumbSchema, articleSchema];
+  if (faqSchema) combinedSchema.push(faqSchema);
+
   return (
     <div className="flex flex-col lg:flex-row h-full overflow-hidden">
+      {/* Dynamic Head Tags */}
+      <SEOHead 
+        title={lesson.title}
+        description={`TrackingBolt 실습: ${lesson.title}. 직접 코드를 작성하며 배우는 ${lesson.track} 추적 설치 가이드.`}
+        url={currentUrl}
+        schema={combinedSchema}
+      />
+
       {/* LEFT: Instructions (40%) */}
       <div className="lg:w-5/12 flex flex-col h-full border-r border-gray-700 bg-gray-50">
         <div className="flex-1 p-6 overflow-y-auto custom-scrollbar prose prose-sm max-w-none prose-slate">
@@ -118,7 +193,7 @@ const LessonView: React.FC<LessonViewProps> = ({ lesson, onComplete }) => {
 
             {/* References Section */}
             {lesson.references && lesson.references.length > 0 && (
-              <div className="mt-12 pt-6 border-t border-gray-200">
+              <div className="mt-8 pt-6 border-t border-gray-200">
                 <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">📚 참고 공식 문서 (Google Help)</h4>
                 <ul className="space-y-2 list-none p-0 m-0">
                   {lesson.references.map((ref, idx) => (
@@ -143,6 +218,25 @@ const LessonView: React.FC<LessonViewProps> = ({ lesson, onComplete }) => {
                     </li>
                   ))}
                 </ul>
+              </div>
+            )}
+            
+            {/* FAQ Section (Visible) */}
+            {lesson.faqs && lesson.faqs.length > 0 && (
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">💬 자주 묻는 질문 (FAQ)</h4>
+                <div className="space-y-4">
+                  {lesson.faqs.map((faq, idx) => (
+                    <div key={idx} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                      <h5 className="text-sm font-bold text-gray-800 mb-2 flex items-start gap-2">
+                        <span className="text-blue-500">Q.</span> {faq.question}
+                      </h5>
+                      <p className="text-sm text-gray-600 leading-relaxed pl-5 border-l-2 border-gray-100">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>

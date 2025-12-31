@@ -32,6 +32,16 @@ export const metaLessons: Lesson[] = [
 </script>`,
     initialCode: `// fbq 함수를 사용해 Contact 이벤트를 보내보세요.`,
     postCode: ``,
+    faqs: [
+      {
+        question: "픽셀이 잘 설치됐는지 어떻게 아나요?",
+        answer: "크롬 확장 프로그램 'Meta Pixel Helper'를 설치하면, 현재 웹사이트에서 작동 중인 픽셀 ID와 이벤트를 녹색 불빛으로 확인할 수 있습니다."
+      },
+      {
+        question: "앱(App)은 어떻게 추적하나요?",
+        answer: "앱은 픽셀 대신 'Facebook SDK'를 설치해야 합니다. 작동 원리는 비슷하지만 구현 방식은 다릅니다."
+      }
+    ],
     tasks: [
       {
         id: 't1',
@@ -77,6 +87,16 @@ fbq('track', 'PageView');
 
 // 2. 페이지 뷰 추적 (track PageView)
 `,
+    faqs: [
+      {
+        question: "SPA(React 등)에서는 PageView를 어떻게 하나요?",
+        answer: "페이지가 바뀔 때마다(URL 변경 시점) 개발자가 수동으로 `fbq('track', 'PageView')`를 다시 호출해줘야 합니다. 그렇지 않으면 첫 진입 페이지만 기록됩니다."
+      },
+      {
+        question: "여러 개의 픽셀 ID를 심어도 되나요?",
+        answer: "네, 대행사를 쓰거나 여러 부서에서 관리할 때 `fbq('init', 'ID_1'); fbq('init', 'ID_2');` 처럼 여러 번 초기화하면 이후 `track` 명령이 모든 ID로 전송됩니다."
+      }
+    ],
     tasks: [
       {
         id: 't1',
@@ -134,6 +154,16 @@ fbq('track', 'PageView');
 
 // 아래에 상품 조회(ViewContent) 이벤트를 추가하세요.
 `,
+    faqs: [
+      {
+        question: "content_type: 'product'는 왜 넣나요?",
+        answer: "이게 있어야 메타의 '다이내믹 애드(DPA)' 카탈로그와 연동됩니다. 여행 상품이라면 'hotel', 'flight' 등을 씁니다."
+      },
+      {
+        question: "content_ids는 무엇인가요?",
+        answer: "가장 중요한 파라미터입니다. 사용자가 본 상품 ID를 배열 `['sku_123']`로 보내주면, 메타가 해당 상품을 피드에서 찾아내어 나중에 페이스북 피드에서 다시 보여줍니다(리타겟팅)."
+      }
+    ],
     tasks: [
       {
         id: 't1',

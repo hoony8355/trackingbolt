@@ -1,3 +1,4 @@
+
 export type TrackType = 'GA4' | 'GTM' | 'Meta' | 'Console';
 
 export interface TrackingEvent {
@@ -20,6 +21,11 @@ export interface ValidationResult {
   message: string;
 }
 
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
 export interface Lesson {
   id: string;
   track: TrackType;
@@ -39,6 +45,9 @@ export interface Lesson {
 
   // External Links
   references?: { label: string; url: string; }[];
+  
+  // SEO & Content
+  faqs?: FAQ[];
   
   // Optional hint for the user
   hint?: string;

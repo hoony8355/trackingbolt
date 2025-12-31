@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation, useParams, Navigate } from 'react-router-dom';
 import { ALL_LESSONS, TRACKS } from './data/lessonRegistry';
 import LessonView from './components/LessonView';
 import LandingPage from './components/LandingPage';
-import { Lesson } from './types';
+
+// Wrapper component to extract lessonId from URL and pass to LessonView
+const LessonRouteWrapper: React.FC<{ onComplete: (currentId: string) => void }> = ({ onComplete }) => {
+  const { lessonId } = useParams<{ lessonId: string }>();
+  const lesson = ALL_LESSONS.find(l => l.id === lessonId);
+
+  if (!lesson) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <LessonView lesson={lesson} onComplete={() => onComplete(lesson.id)} />;
+};
 
 const App: React.FC = () => {
-  const [isLandingPage, setIsLandingPage] = useState(true);
-  const [activeLessonId, setActiveLessonId] = useState<string>(ALL_LESSONS[0].id);
+  const navigate = useNavigate();
+  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   
   // Sidebar Toggle State (Keys: 'GA4', 'GTM', 'Meta')
@@ -16,22 +28,31 @@ const App: React.FC = () => {
     Meta: false,
   });
 
-  const activeLesson = ALL_LESSONS.find(l => l.id === activeLessonId) || ALL_LESSONS[0];
+  // Sync Sidebar expansion with current URL
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.startsWith('/lesson/')) {
+      const lessonId = path.split('/')[2];
+      const currentLesson = ALL_LESSONS.find(l => l.id === lessonId);
+      if (currentLesson) {
+        setExpandedTracks(prev => ({
+          ...prev,
+          [currentLesson.track]: true
+        }));
+      }
+    }
+  }, [location.pathname]);
 
-  const handleLessonComplete = () => {
-    const currentIndex = ALL_LESSONS.findIndex(l => l.id === activeLessonId);
+  const handleLessonComplete = (currentLessonId: string) => {
+    const currentIndex = ALL_LESSONS.findIndex(l => l.id === currentLessonId);
     if (currentIndex < ALL_LESSONS.length - 1) {
       const nextLesson = ALL_LESSONS[currentIndex + 1];
-      setActiveLessonId(nextLesson.id);
+      navigate(`/lesson/${nextLesson.id}`);
       
-      // Ensure the track of the next lesson is expanded
-      setExpandedTracks(prev => ({
-        ...prev,
-        [nextLesson.track]: true
-      }));
+      // Track expansion is handled by the useEffect above
     } else {
       alert("축하합니다! 준비된 모든 레슨을 완료했습니다.");
-      setIsLandingPage(true);
+      navigate('/');
     }
   };
 
@@ -43,35 +64,30 @@ const App: React.FC = () => {
   };
 
   const handleStartTrack = (trackKey: string) => {
-    // Find the first lesson of this track
     const firstLesson = ALL_LESSONS.find(l => l.track === trackKey);
     if (firstLesson) {
-      setActiveLessonId(firstLesson.id);
-      setIsLandingPage(false);
-      
-      // Expand only the selected track
-      setExpandedTracks({
-        GA4: false,
-        GTM: false,
-        Meta: false,
-        [trackKey]: true
-      });
-      
+      navigate(`/lesson/${firstLesson.id}`);
       if (window.innerWidth < 1024) setSidebarOpen(false);
     }
   };
 
   const goToHome = () => {
-    setIsLandingPage(true);
+    navigate('/');
     if (window.innerWidth < 1024) setSidebarOpen(false);
   };
 
-  const groupedLessons: Record<string, Lesson[]> = ALL_LESSONS.reduce((acc, lesson) => {
+  const groupedLessons = ALL_LESSONS.reduce((acc, lesson) => {
     const track = lesson.track;
     if (!acc[track]) acc[track] = [];
     acc[track].push(lesson);
     return acc;
-  }, {} as Record<string, Lesson[]>);
+  }, {} as Record<string, any[]>);
+
+  const isLandingPage = location.pathname === '/';
+  // Extract active lesson ID for sidebar highlighting
+  const currentPathLessonId = location.pathname.startsWith('/lesson/') 
+    ? location.pathname.split('/')[2] 
+    : null;
 
   return (
     <div className="flex h-screen w-screen bg-gray-900 text-gray-100 overflow-hidden font-sans">
@@ -101,7 +117,7 @@ const App: React.FC = () => {
         {/* Navigation Menu */}
         <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
           
-          {/* Home Button (Visible in Sidebar) */}
+          {/* Home Button */}
           <button 
             onClick={goToHome}
             className={`w-full text-left px-3 py-2 rounded-md text-sm font-bold flex items-center gap-2 mb-4 transition-colors ${isLandingPage ? 'bg-blue-900/50 text-blue-200 border border-blue-800' : 'text-gray-400 hover:bg-gray-800'}`}
@@ -113,7 +129,7 @@ const App: React.FC = () => {
           {Object.keys(groupedLessons).map(trackKey => {
              const isExpanded = expandedTracks[trackKey];
              const lessons = groupedLessons[trackKey];
-             const activeInThisTrack = !isLandingPage && activeLesson.track === trackKey;
+             const activeInThisTrack = lessons.some((l: any) => l.id === currentPathLessonId);
              
              return (
                <div key={trackKey} className="rounded-lg overflow-hidden border border-transparent">
@@ -121,7 +137,7 @@ const App: React.FC = () => {
                  <button
                    onClick={() => toggleTrack(trackKey)}
                    className={`w-full flex items-center justify-between px-3 py-3 text-xs font-extrabold uppercase tracking-widest transition-colors ${
-                     activeInThisTrack ? 'bg-gray-800 text-white' : 'text-gray-500 hover:bg-gray-800/50 hover:text-gray-300'
+                     activeInThisTrack && !isLandingPage ? 'bg-gray-800 text-white' : 'text-gray-500 hover:bg-gray-800/50 hover:text-gray-300'
                    }`}
                  >
                    <span>{TRACKS[trackKey as keyof typeof TRACKS] || trackKey}</span>
@@ -133,16 +149,15 @@ const App: React.FC = () => {
                  {/* Lessons List (Collapsible) */}
                  <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
                     <ul className="space-y-0.5 bg-gray-900/50 pb-2">
-                      {lessons.map((lesson, idx) => {
-                        const isActive = !isLandingPage && lesson.id === activeLessonId;
+                      {lessons.map((lesson: any, idx: number) => {
+                        const isActive = lesson.id === currentPathLessonId;
                         const displayTitle = lesson.title.replace(/^레슨 \d+:\s/, '').replace(/^\d+\.\s/, ''); 
 
                         return (
                           <li key={lesson.id}>
                             <button
                               onClick={() => {
-                                setActiveLessonId(lesson.id);
-                                setIsLandingPage(false);
+                                navigate(`/lesson/${lesson.id}`);
                                 if (window.innerWidth < 1024) setSidebarOpen(false);
                               }}
                               className={`w-full text-left pl-6 pr-3 py-2 text-sm transition-all border-l-2 ${
@@ -174,14 +189,14 @@ const App: React.FC = () => {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full bg-white relative overflow-hidden">
-        {isLandingPage ? (
-          <LandingPage onStartTrack={handleStartTrack} />
-        ) : (
-          <LessonView 
-            lesson={activeLesson}
-            onComplete={handleLessonComplete}
+        <Routes>
+          <Route path="/" element={<LandingPage onStartTrack={handleStartTrack} />} />
+          <Route 
+            path="/lesson/:lessonId" 
+            element={<LessonRouteWrapper onComplete={handleLessonComplete} />} 
           />
-        )}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </div>
     </div>
   );

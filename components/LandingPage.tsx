@@ -1,13 +1,33 @@
 import React from 'react';
 import { TRACKS } from '../data/lessonRegistry';
+import SEOHead from './SEOHead';
 
 interface LandingPageProps {
   onStartTrack: (track: string) => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStartTrack }) => {
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "TrackingBolt",
+    "url": "https://www.trackingbolt.com/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.trackingbolt.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-full bg-gray-50 text-gray-800 p-8 overflow-y-auto">
+      <SEOHead 
+        title="홈"
+        description="GA4, GTM, Meta Pixel 실전 코딩 학습 플랫폼. 마케터와 개발자를 위한 인터랙티브 트래킹 가이드."
+        url="https://www.trackingbolt.com/"
+        schema={websiteSchema}
+      />
+      
       <div className="max-w-4xl w-full space-y-12">
         
         {/* Header Section */}
