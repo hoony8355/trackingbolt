@@ -1,3 +1,4 @@
+
 import { TrackingEvent, TrackType } from '../types';
 
 export const generateId = () => Math.random().toString(36).substr(2, 9);
@@ -36,17 +37,41 @@ export class MockRuntime {
   public clear() {
     this.events = [];
     this.consoleLogs = [];
-    // Clean up window pollution
-    // @ts-ignore
-    delete window.gtag;
-    // @ts-ignore
-    delete window.fbq;
-    // @ts-ignore
-    window.dataLayer = [];
-    // @ts-ignore
-    delete window.handleCartClick;
-    // @ts-ignore
-    delete window.handleSignupClick;
+    
+    // Clean up window pollution safely
+    // 일부 환경(Strict Mode 등)에서 전역 변수 delete 시 에러가 발생할 수 있으므로 try-catch로 감쌉니다.
+    try {
+      // @ts-ignore
+      window.gtag = undefined;
+      // @ts-ignore
+      delete window.gtag;
+    } catch (e) { /* ignore */ }
+
+    try {
+      // @ts-ignore
+      window.fbq = undefined;
+      // @ts-ignore
+      delete window.fbq;
+    } catch (e) { /* ignore */ }
+
+    try {
+      // @ts-ignore
+      window.dataLayer = [];
+    } catch (e) { /* ignore */ }
+
+    try {
+      // @ts-ignore
+      window.handleCartClick = undefined;
+      // @ts-ignore
+      delete window.handleCartClick;
+    } catch (e) { /* ignore */ }
+
+    try {
+      // @ts-ignore
+      window.handleSignupClick = undefined;
+      // @ts-ignore
+      delete window.handleSignupClick;
+    } catch (e) { /* ignore */ }
     
     this.notify();
   }
