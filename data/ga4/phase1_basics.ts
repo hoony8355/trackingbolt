@@ -39,9 +39,7 @@ GA4에게 "**나 이제 공부 시작해!**" 라고 첫 인사를 건네봅시�
     preCode: `<script>
   // Google Analytics 4 라이브러리가 로드된 상태입니다.
 </script>`,
-    initialCode: `  // 아래에 코드를 입력하고 실행하세요.
-  
-  `,
+    initialCode: `// 아래에 코드를 직접 입력하세요.`,
     postCode: ``,
     tasks: [
       {
@@ -53,6 +51,7 @@ GA4에게 "**나 이제 공부 시작해!**" 라고 첫 인사를 건네봅시�
         }
       }
     ],
+    hint: "gtag('event', 'tutorial_begin');",
     solutionCode: `  gtag('event', 'tutorial_begin');`
   },
   {
@@ -84,9 +83,7 @@ gtag('config', 'G-TRACK-DEMO');
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());`,
-    initialCode: `  // 여기에 config 코드를 작성하세요.
-  
-`,
+    initialCode: `// 여기에 config 코드를 작성하세요.`,
     postCode: `</script>`,
     tasks: [
       {
@@ -95,7 +92,6 @@ gtag('config', 'G-TRACK-DEMO');
         validate: (events) => {
           const hasConfig = findGa4Event(events, 'config', 'G-TRACK-DEMO');
           if (!hasConfig) {
-            // Check if they used a wrong ID
             const wrongConfig = findGa4Event(events, 'config');
             if (wrongConfig) return { passed: false, message: `ID가 다릅니다. 입력된 ID: ${wrongConfig.args[0]}` };
             return { passed: false, message: "config 명령어가 발견되지 않았습니다." };
@@ -104,6 +100,7 @@ gtag('config', 'G-TRACK-DEMO');
         }
       }
     ],
+    hint: "gtag('config', 'G-TRACK-DEMO');",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO');`
   },
   {
@@ -127,8 +124,7 @@ gtag('config', 'G-TRACK-DEMO');
 2. 실행 후, 하단 패널의 **[Stream]** 탭을 눌러보세요.
 3. 자동으로 생성된 \`page_view\`가 보이면 성공입니다.
     `,
-    initialCode: `  // 1. GA4 초기화 코드를 작성하세요.
-  `,
+    initialCode: `// GA4 초기화 코드를 다시 한 번 작성해보세요.`,
     references: [
       { label: "[GA4] 자동 수집 이벤트", url: "https://support.google.com/analytics/answer/9234069?hl=ko" }
     ],
@@ -145,12 +141,12 @@ gtag('config', 'G-TRACK-DEMO');
         id: 'problem2',
         description: "하단 [Stream] 탭에서 page_view 확인하기",
         validate: (events) => {
-          // Check specifically if page_view was triggered implicitly by config
           const hasPV = findGa4Event(events, 'page_view') || findGa4Event(events, 'event', 'page_view'); 
           return { passed: !!hasPV, message: hasPV ? "자동 수집 이벤트 감지됨 (성공)" : "config가 정상 실행되면 자동으로 뜹니다." };
         }
       }
     ],
+    hint: "gtag('config', 'G-TRACK-DEMO');",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO');`
   },
   {
@@ -172,10 +168,7 @@ gtag('config', 'ID', {
 });
 \`\`\`
     `,
-    initialCode: `  // 자동 페이지 뷰 수집을 끄는 옵션을 추가하세요.
-  gtag('config', 'G-TRACK-DEMO', {
-    
-  });`,
+    initialCode: `// 자동 페이지 뷰 수집을 끄는 옵션을 추가하여 config를 작성하세요.`,
     tasks: [
       {
         id: 'problem1',
@@ -202,6 +195,7 @@ gtag('config', 'ID', {
         }
       }
     ],
+    hint: "gtag('config', 'G-TRACK-DEMO', { send_page_view: false });",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO', {
     send_page_view: false
   });`
@@ -228,9 +222,7 @@ gtag('config', 'ID', {
     initialCode: `  // 1. 자동 수집 끄기 (작성됨)
   gtag('config', 'G-TRACK-DEMO', { send_page_view: false });
 
-  // 2. 수동으로 page_view 이벤트 전송
-  // 힌트: gtag('event', '이벤트명', { ...상세정보... });
-  
+  // 2. 수동으로 page_view 이벤트 전송 (직접 작성해보세요)
   `,
     references: [
       { label: "[GA4] 이벤트 정보", url: "https://support.google.com/analytics/answer/9322688?hl=ko" }
@@ -259,6 +251,7 @@ gtag('config', 'ID', {
         }
       }
     ],
+    hint: "gtag('event', 'page_view', { page_title: '겨울 코트 특가전' });",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO', { send_page_view: false });
 
   gtag('event', 'page_view', {
@@ -295,11 +288,7 @@ gtag('config', 'ID', {
 </script>`,
     initialCode: `  gtag('config', 'G-TRACK-DEMO', { send_page_view: false });
 
-  gtag('event', 'page_view', {
-    // 직접 "장바구니"라고 쓰지 말고, 변수를 사용하세요.
-    page_title: '여기에_변수를_넣으세요',
-    page_location: '여기에_변수를_넣으세요'
-  });`,
+  // 변수를 사용하여 page_view 이벤트를 전송하세요.`,
     tasks: [
       {
         id: 'problem1',
@@ -332,6 +321,7 @@ gtag('config', 'ID', {
         }
       }
     ],
+    hint: "따옴표 없이 변수명을 그대로 값에 넣으세요.\n예: page_title: document.title",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO', { send_page_view: false });
 
   gtag('event', 'page_view', {

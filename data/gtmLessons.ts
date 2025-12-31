@@ -28,10 +28,7 @@ GTM 학습을 시작하는 의미로, \`gtm_tutorial_start\`라는 이벤트를 
     preCode: `// window.dataLayer 배열은 GTM이 로드될 때 자동 생성되거나,
 // 개발자가 미리 선언해둡니다.
 window.dataLayer = window.dataLayer || [];`,
-    initialCode: `// 아래 코드를 실행하여 데이터 레이어에 이벤트를 push 하세요.
-dataLayer.push({
-  'event': 'gtm_tutorial_start'
-});`,
+    initialCode: `// dataLayer.push 명령어를 사용하여 이벤트를 보내보세요.`,
     postCode: ``,
     tasks: [
       {
@@ -43,6 +40,7 @@ dataLayer.push({
         }
       }
     ],
+    hint: "dataLayer.push({ 'event': 'gtm_tutorial_start' });",
     solutionCode: `dataLayer.push({
   'event': 'gtm_tutorial_start'
 });`
@@ -82,9 +80,7 @@ GTM에게 이 사실을 알려주세요.
 2.  \`event\` 키값은 \`sign_up_complete\`로 설정하세요.
 3.  \`userId\`라는 변수에 \`user_999\`라는 값을 함께 보내세요.
     `,
-    initialCode: `// window.dataLayer는 이미 선언되어 있습니다.
-// 회원가입 완료 정보를 GTM으로 밀어넣으세요(push).
-
+    initialCode: `// 회원가입 완료 정보를 GTM으로 밀어넣으세요(push).
 `,
     tasks: [
        {
@@ -112,6 +108,7 @@ GTM에게 이 사실을 알려주세요.
         }
       }
     ],
+    hint: "push 함수 안에는 객체 { } 가 들어갑니다. 'event'와 'userId'를 키로 사용하세요.",
     solutionCode: `dataLayer.push({
   'event': 'sign_up_complete',
   'userId': 'user_999'
@@ -150,10 +147,8 @@ dataLayer.push({
 2.  \`ecommerce\` 객체 안에 데이터를 담아야 합니다.
 3.  \`ecommerce\` 내부에 \`value\`(가격)를 **15000**으로 설정하세요.
     `,
-    initialCode: `// 장바구니 담기 이벤트를 구현하세요.
-dataLayer.push({
-  
-});`,
+    initialCode: `// 장바구니 담기 이벤트를 구현하세요. (ecommerce 구조 주의)
+`,
     tasks: [
       {
         id: 't1',
@@ -180,6 +175,7 @@ dataLayer.push({
         }
       }
     ],
+    hint: "push({ 'event': 'add_to_cart', 'ecommerce': { 'value': 15000 } }) 구조입니다.",
     solutionCode: `dataLayer.push({
   'event': 'add_to_cart',
   'ecommerce': {

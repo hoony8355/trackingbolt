@@ -33,10 +33,8 @@ export const ga4Phase5: Lesson[] = [
     preCode: `<script>
   // 현재 페이지: /complete
 </script>`,
-    initialCode: `  if (location.pathname === '/wrong_path') {
-    console.log('purchase fired');
-    gtag('event', 'purchase');
-  }`,
+    initialCode: `  // if 조건문을 사용하여 안전하게 코드를 작성하세요.
+  `,
     tasks: [
       {
         id: 'step24',
@@ -50,14 +48,13 @@ export const ga4Phase5: Lesson[] = [
         description: "console.log 출력 확인",
         // Note: MockRuntime needs to capture console logs for this to work perfectly. 
         // Current simple check: just ensuring code execution logic is sound via event.
-        // If we strictly check console, we need to update MockRuntime.
-        // Assuming strict check is waived for simple verification or updated runtime.
         validate: (events) => {
            // For this demo, if event fired, we assume logic block was entered.
            return { passed: true, message: "로직 실행 확인" }; 
         }
       }
     ],
+    hint: "if (location.pathname === '/complete') { ... }",
     solutionCode: `  if (location.pathname === '/complete') {
     console.log('purchase fired');
     gtag('event', 'purchase', { transaction_id: 'test' });
@@ -79,12 +76,13 @@ export const ga4Phase5: Lesson[] = [
 4. 각 상품은 \`item_id\`, \`item_name\`, \`price\` 포함
 5. (선택) 콘솔 로그 출력
     `,
-    initialCode: `  // 최종 과제 코드를 작성하세요.
+    initialCode: `  // 상품 데이터 예시
   const myItems = [
     { id: 'p1', name: 'Socks', price: 5000 },
     { id: 'p2', name: 'Gloves', price: 15000 }
   ];
 
+  // 여기에 최종 코드를 작성하세요.
   `,
     tasks: [
       {
@@ -110,6 +108,7 @@ export const ga4Phase5: Lesson[] = [
         }
       }
     ],
+    hint: "items: myItems (단, myItems 내부 속성명을 GA4 표준인 item_id, item_name으로 매핑해서 넣어야 합니다)",
     solutionCode: `  const myItems = [
     { item_id: 'p1', item_name: 'Socks', price: 5000, quantity: 1 },
     { item_id: 'p2', item_name: 'Gloves', price: 15000, quantity: 1 }

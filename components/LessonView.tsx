@@ -18,6 +18,7 @@ const LessonView: React.FC<LessonViewProps> = ({ lesson, onComplete }) => {
   const [runtime] = useState(() => new MockRuntime());
   const [allPassed, setAllPassed] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showHint, setShowHint] = useState(false);
 
   // Subscribe to runtime updates
   useEffect(() => {
@@ -56,6 +57,7 @@ const LessonView: React.FC<LessonViewProps> = ({ lesson, onComplete }) => {
     setValidationResults({});
     setAllPassed(false);
     setShowSuccessModal(false);
+    setShowHint(false);
     runtime.clear();
   }, [lesson.id, lesson.initialCode, runtime]);
 
@@ -70,8 +72,9 @@ const LessonView: React.FC<LessonViewProps> = ({ lesson, onComplete }) => {
 
   const handleShowSolution = () => {
     if (lesson.solutionCode) {
-      if (window.confirm("정말 보시겠습니까? 먼저 직접 풀어보세요!")) {
+      if (window.confirm("정말 정답을 보시겠습니까? 기존 코드는 사라집니다.")) {
         setCode(lesson.solutionCode);
+        setShowHint(false);
       }
     }
   };
@@ -157,16 +160,54 @@ const LessonView: React.FC<LessonViewProps> = ({ lesson, onComplete }) => {
             postCode={lesson.postCode}
             onChange={setCode} 
           />
+
+          {/* Hint Overlay */}
+          {showHint && (
+            <div className="absolute top-4 right-4 z-50 max-w-sm w-full animate-fade-in">
+              <div className="bg-yellow-50 border border-yellow-200 shadow-xl rounded-lg p-4 text-gray-800 relative">
+                 <button 
+                  onClick={() => setShowHint(false)}
+                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+                 >
+                   ✕
+                 </button>
+                 <div className="flex items-start gap-3">
+                   <div className="text-2xl select-none">💡</div>
+                   <div>
+                     <h4 className="font-bold text-sm text-yellow-800">힌트</h4>
+                     <p className="text-xs text-gray-700 mt-1 whitespace-pre-wrap leading-relaxed">
+                       {lesson.hint || "이 레슨은 힌트가 없습니다. 설명을 꼼꼼히 읽어보세요!"}
+                     </p>
+                   </div>
+                 </div>
+              </div>
+            </div>
+          )}
           
           {/* Action Bar */}
           <div className="bg-[#252526] px-5 py-3 border-t border-gray-700 flex justify-between items-center shadow-lg">
-            <button 
-              onClick={handleShowSolution}
-              className="text-gray-400 text-xs font-medium hover:text-white hover:underline disabled:opacity-30 transition-colors"
-              disabled={!lesson.solutionCode}
-            >
-              💡 정답 코드 보기
-            </button>
+            <div className="flex items-center gap-4">
+               {/* Hint Button */}
+              <button 
+                onClick={() => setShowHint(!showHint)}
+                className={`text-xs font-medium transition-colors flex items-center gap-1.5 ${showHint ? 'text-yellow-400' : 'text-gray-400 hover:text-yellow-200'}`}
+                title="도움말 보기"
+              >
+                <span>💡</span>
+                {showHint ? '힌트 닫기' : '힌트 보기'}
+              </button>
+              
+              {/* Solution Button */}
+              <button 
+                onClick={handleShowSolution}
+                className="text-gray-500 text-xs font-medium hover:text-gray-300 hover:underline disabled:opacity-30 transition-colors flex items-center gap-1"
+                disabled={!lesson.solutionCode}
+                title="정답 코드로 덮어쓰기"
+              >
+                <span>🔓</span> 정답 보기
+              </button>
+            </div>
+
             <div className="flex gap-3">
               <button
                 onClick={() => {

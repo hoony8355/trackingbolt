@@ -39,6 +39,9 @@ export interface Lesson {
 
   // External Links
   references?: { label: string; url: string; }[];
+  
+  // Optional hint for the user
+  hint?: string;
 }
 
 export interface RuntimeContext {

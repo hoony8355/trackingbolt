@@ -29,9 +29,7 @@ GA4 데이터도 마찬가지입니다.
     `,
     initialCode: `  gtag('config', 'G-TRACK-DEMO');
 
-  // [문제] 'BannerClick'은 나쁜 예시입니다. 올바른 규칙으로 고쳐주세요.
-  gtag('event', 'BannerClick');
-  `,
+  // 규칙(소문자, 언더바)을 지켜 이벤트를 전송하세요.`,
     references: [
       { label: "[GA4] 이벤트 이름 지정 규칙", url: "https://support.google.com/analytics/answer/13316687?hl=ko" },
       { label: "[GA4] 맞춤 이벤트", url: "https://support.google.com/analytics/answer/12229021?hl=ko" }
@@ -49,6 +47,7 @@ GA4 데이터도 마찬가지입니다.
         }
       }
     ],
+    hint: "gtag('event', 'click_main_banner');",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO');
   gtag('event', 'click_main_banner');`
   },
@@ -77,10 +76,7 @@ gtag('event', '이벤트명', {
     `,
     initialCode: `  gtag('config', 'G-TRACK-DEMO');
 
-  // 중괄호 { } 안에 상세 정보를 적어주세요.
-  gtag('event', 'click_main_banner', {
-    
-  });`,
+  // click_main_banner 이벤트에 파라미터를 추가하여 전송하세요.`,
     references: [
       { label: "[GA4] 이벤트 파라미터", url: "https://support.google.com/analytics/table/13594742?hl=ko" }
     ],
@@ -109,6 +105,7 @@ gtag('event', '이벤트명', {
         }
       }
     ],
+    hint: "세 번째 인자로 { promotion_name: 'summer_sale', promotion_id: 'ban_101' } 객체를 전달하세요.",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO');
 
   gtag('event', 'click_main_banner', {
@@ -132,20 +129,15 @@ gtag('event', '이벤트명', {
 
 ### 🎯 실습 가이드
 1. \`handleCartClick\`이라는 대기실(함수)을 만드세요.
-2. 그 안에 \`add_to_cart\` 코드를 작성하세요.
+2. 그 안에 \`add_to_cart\` 코드를 작성하세요. (금액: 59000, 통화: KRW)
 3. 마지막 줄에서 \`handleCartClick()\`을 **직접 호출**하여, 버튼이 클릭된 상황을 흉내 내보세요.
     `,
     initialCode: `  gtag('config', 'G-TRACK-DEMO');
 
-  // 1. 함수(대기실) 만들기
-  window.handleCartClick = function() {
-    console.log("장바구니 버튼 클릭됨!");
-    // 2. 여기에 gtag 코드를 넣으세요 ('add_to_cart', value: 59000, currency: 'KRW')
-    
-  };
+  // 1. handleCartClick 함수를 정의하세요.
+  // 2. 함수 안에 gtag 코드를 넣으세요.
 
-  // 3. 테스트를 위해 강제로 클릭 상황 만들기 (함수 호출)
-  handleCartClick();
+  // 3. 테스트를 위해 함수를 호출하세요.
   `,
     tasks: [
       {
@@ -163,6 +155,7 @@ gtag('event', '이벤트명', {
         }
       }
     ],
+    hint: "window.handleCartClick = function() { ... } 형태로 작성하고, 마지막 줄에서 handleCartClick(); 을 실행합니다.",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO');
 
   window.handleCartClick = function() {
@@ -203,12 +196,7 @@ gtag('event', '이벤트명', {
     `,
     initialCode: `  gtag('config', 'G-TRACK-DEMO');
 
-  window.handleSignupClick = function() {
-    // 여기에 표준 이벤트를 작성하세요.
-    
-  };
-
-  handleSignupClick(); // 실행
+  // handleSignupClick 함수를 정의하고, sign_up 표준 이벤트를 전송하세요.
   `,
     references: [
       { label: "[GA4] 추천 이벤트", url: "https://support.google.com/analytics/answer/9267735?hl=ko" }
@@ -234,6 +222,7 @@ gtag('event', '이벤트명', {
         }
       }
     ],
+    hint: "gtag('event', 'sign_up', { method: 'email' });",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO');
 
   window.handleSignupClick = function() {
@@ -265,10 +254,7 @@ gtag('event', '이벤트명', {
     `,
     initialCode: `  gtag('config', 'G-TRACK-DEMO');
 
-  // 디버그 모드를 켜서 안전하게 이벤트를 보내세요.
-  gtag('event', 'test_event', {
-    
-  });`,
+  // 디버그 모드를 켜서 test_event를 전송하세요.`,
     references: [
       { label: "[GA4] DebugView에서 이벤트 모니터링하기", url: "https://support.google.com/analytics/answer/7201382?hl=ko" }
     ],
@@ -288,6 +274,7 @@ gtag('event', '이벤트명', {
         }
       }
     ],
+    hint: "gtag('event', 'test_event', { debug_mode: true });",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO');
 
   gtag('event', 'test_event', {

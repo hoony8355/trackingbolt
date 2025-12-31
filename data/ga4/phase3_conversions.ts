@@ -26,13 +26,7 @@ GA4는 \`sign_up\` 이벤트에 \`method\`라는 꼬리표를 붙이기를 강�
     `,
     preCode: `<!-- 카카오 로그인 버튼 예시 -->
 <button onclick="handleSignupClick()">카카오로 시작하기</button>`,
-    initialCode: `  // 회원가입 버튼 클릭 시 실행될 함수
-  window.handleSignupClick = function() {
-    
-  };
-  
-  // 시뮬레이션 실행
-  handleSignupClick();
+    initialCode: `  // 회원가입 함수와 이벤트를 작성하세요.
   `,
     tasks: [
       {
@@ -54,6 +48,7 @@ GA4는 \`sign_up\` 이벤트에 \`method\`라는 꼬리표를 붙이기를 강�
         }
       }
     ],
+    hint: "window.handleSignupClick = function() { ... } 안에서 gtag를 호출하고, 마지막 줄에서 함수를 실행하세요.",
     solutionCode: `  window.handleSignupClick = function() {
     gtag('event', 'sign_up', {
       method: 'Kakao'
@@ -106,6 +101,7 @@ GA4는 \`sign_up\` 이벤트에 \`method\`라는 꼬리표를 붙이기를 강�
         }
       }
     ],
+    hint: "gtag('event', 'login', { method: 'Email' });",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO');
   gtag('event', 'login', { method: 'Email' });`
   },
@@ -154,6 +150,7 @@ GA4는 \`sign_up\` 이벤트에 \`method\`라는 꼬리표를 붙이기를 강�
         }
       }
     ],
+    hint: "value는 숫자 50000, currency는 문자열 'KRW' 입니다.",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO');
 
   gtag('event', 'generate_lead', {
@@ -185,17 +182,8 @@ GA4는 상품 정보를 담을 때 \`items\`라는 전용 바구니(배열)를 �
     `,
     initialCode: `  gtag('config', 'G-TRACK-DEMO');
 
-  // 상품 조회 이벤트
-  gtag('event', 'view_item', {
-    currency: 'KRW',
-    value: 59000,
-    items: [
-      // 이곳에 상품 정보를 채워넣으세요 { ... }
-      {
-        
-      }
-    ]
-  });`,
+  // 상품 조회(view_item) 이벤트를 작성하고, items 배열을 완성하세요.
+  `,
     tasks: [
       {
         id: 'step14_array',
@@ -223,6 +211,7 @@ GA4는 상품 정보를 담을 때 \`items\`라는 전용 바구니(배열)를 �
         }
       }
     ],
+    hint: "파라미터 객체 안에 items: [ { item_id: '...', ... } ] 형태로 작성하세요.",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO');
 
   gtag('event', 'view_item', {
@@ -257,12 +246,8 @@ GA4는 "**어? 아까 본 거랑 다른 물건이네?**" 라고 생각합니다.
 장바구니 담기 핸들러를 작성하세요. 
 이전 레슨과 **똑같은 상품 ID**(\`coat_2024\`)를 사용해야 합니다.
     `,
-    initialCode: `  window.handleCartClick = function() {
-    // 여기에 코드를 작성하세요. (add_to_cart)
-    
-  };
-  
-  handleCartClick();
+    initialCode: `  // 장바구니 버튼 클릭 함수(handleCartClick)를 작성하세요.
+  // add_to_cart 이벤트와 items 정보를 포함해야 합니다.
   `,
     tasks: [
       {
@@ -285,6 +270,7 @@ GA4는 "**어? 아까 본 거랑 다른 물건이네?**" 라고 생각합니다.
         }
       }
     ],
+    hint: "이전 레슨 코드에서 이벤트 이름만 'add_to_cart'로 바꾸면 됩니다.",
     solutionCode: `  window.handleCartClick = function() {
     gtag('event', 'add_to_cart', {
       currency: 'KRW',

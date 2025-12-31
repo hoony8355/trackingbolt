@@ -31,10 +31,8 @@ GA4는 같은 영수증 번호(\`transaction_id\`)가 또 들어오면 "아, 아
     `,
     initialCode: `  gtag('config', 'G-TRACK-DEMO');
 
-  // 구매 이벤트를 전송하세요.
-  gtag('event', 'purchase', {
-    
-  });`,
+  // purchase 이벤트를 작성하고 필수값(transaction_id)을 포함하세요.
+  `,
     tasks: [
       {
         id: 'step16_tid',
@@ -58,6 +56,7 @@ GA4는 같은 영수증 번호(\`transaction_id\`)가 또 들어오면 "아, 아
         }
       }
     ],
+    hint: "transaction_id: 'ORDER_12345'를 파라미터 객체에 추가하세요.",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO');
 
   gtag('event', 'purchase', {
@@ -86,15 +85,9 @@ GA4는 같은 영수증 번호(\`transaction_id\`)가 또 들어오면 "아, 아
 2. 상품 B: ID \`COAT_2024\`, 가격 \`59000\`
 3. \`value\`는 두 가격의 합계로 설정하세요.
     `,
-    initialCode: `  gtag('event', 'purchase', {
-    transaction_id: 'ORDER_999',
-    currency: 'KRW',
-    // 문제 1: value를 계산해서 넣으세요.
-    value: 0, 
-    items: [
-      // 문제 2: 상품 2개를 추가하세요.
-    ]
-  });`,
+    initialCode: `  // 두 개의 상품을 구매하는 purchase 이벤트를 작성하세요.
+  // items 배열 안에 객체가 2개 있어야 합니다.
+  `,
     tasks: [
       {
         id: 'step17_val',
@@ -117,6 +110,7 @@ GA4는 같은 영수증 번호(\`transaction_id\`)가 또 들어오면 "아, 아
         }
       }
     ],
+    hint: "items: [ { item_id: 'SOCKS_001'... }, { item_id: 'COAT_2024'... } ]",
     solutionCode: `  gtag('event', 'purchase', {
     transaction_id: 'ORDER_999',
     currency: 'KRW',

@@ -30,8 +30,7 @@ export const metaLessons: Lesson[] = [
 <script>
   !function(f,b,e,v,n,t,s) { ... }(window, document,'script',...);
 </script>`,
-    initialCode: `// 아래 코드를 실행하여 픽셀을 테스트하세요.
-fbq('track', 'Contact');`,
+    initialCode: `// fbq 함수를 사용해 Contact 이벤트를 보내보세요.`,
     postCode: ``,
     tasks: [
       {
@@ -43,6 +42,7 @@ fbq('track', 'Contact');`,
         }
       }
     ],
+    hint: "fbq('track', 'Contact');",
     solutionCode: `fbq('track', 'Contact');`
   },
 
@@ -75,9 +75,7 @@ fbq('track', 'PageView');
     `,
     initialCode: `// 1. 픽셀 초기화 (init)
 
-
 // 2. 페이지 뷰 추적 (track PageView)
-
 `,
     tasks: [
       {
@@ -97,6 +95,7 @@ fbq('track', 'PageView');
         }
       }
     ],
+    hint: "fbq('init', '123456789');\nfbq('track', 'PageView');",
     solutionCode: `fbq('init', '123456789');
 fbq('track', 'PageView');`
   },
@@ -161,6 +160,7 @@ fbq('track', 'PageView');
         }
       }
     ],
+    hint: "fbq('track', 'ViewContent', { content_name: '...', ... });",
     solutionCode: `fbq('init', '123456789');
 fbq('track', 'PageView');
 
