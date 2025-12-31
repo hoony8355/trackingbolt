@@ -46,11 +46,10 @@ export const ga4Phase5: Lesson[] = [
       {
         id: 'step27',
         description: "console.log 출력 확인",
-        // Note: MockRuntime needs to capture console logs for this to work perfectly. 
-        // Current simple check: just ensuring code execution logic is sound via event.
         validate: (events) => {
-           // For this demo, if event fired, we assume logic block was entered.
-           return { passed: true, message: "로직 실행 확인" }; 
+           // Check if any event is of type 'Console' and command 'log'
+           const hasLog = events.some(e => e.type === 'Console' && e.command === 'log');
+           return { passed: hasLog, message: hasLog ? "로그 출력 확인됨." : "console.log('purchase fired'); 코드가 실행되지 않았습니다." }; 
         }
       }
     ],

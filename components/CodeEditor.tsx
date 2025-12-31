@@ -9,6 +9,27 @@ interface CodeEditorProps {
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({ preCode, code, postCode, onChange, disabled }) => {
+  
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const target = e.currentTarget;
+      const start = target.selectionStart;
+      const end = target.selectionEnd;
+      
+      // Insert 2 spaces for tab
+      const newValue = code.substring(0, start) + "  " + code.substring(end);
+      
+      onChange(newValue);
+      
+      // Restore cursor position after state update
+      // Using requestAnimationFrame to ensure it runs after the render cycle updates the value
+      requestAnimationFrame(() => {
+        target.selectionStart = target.selectionEnd = start + 2;
+      });
+    }
+  };
+
   return (
     <div className="relative w-full h-full flex flex-col font-mono text-sm border border-gray-700 rounded-md overflow-hidden bg-[#1e1e1e] shadow-inner">
       <div className="bg-[#252526] px-4 py-1.5 text-xs text-gray-400 font-bold border-b border-gray-700 flex justify-between items-center">
@@ -33,6 +54,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ preCode, code, postCode, onChan
             className="w-full px-4 py-1 resize-none focus:outline-none bg-[#2d2d2d] text-blue-100 font-mono leading-relaxed block border-y border-gray-700/50"
             value={code}
             onChange={(e) => onChange(e.target.value)}
+            onKeyDown={handleKeyDown}
             disabled={disabled}
             spellCheck={false}
             autoCapitalize="off"

@@ -134,7 +134,8 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ events, tasks, validationResu
                         <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
                           evt.type === 'GA4' ? 'bg-orange-100 text-orange-700' :
                           evt.type === 'GTM' ? 'bg-blue-100 text-blue-700' :
-                          'bg-indigo-100 text-indigo-700'
+                          evt.type === 'Meta' ? 'bg-indigo-100 text-indigo-700' :
+                          'bg-gray-200 text-gray-700' // Console type
                         }`}>
                           {evt.type}
                         </span>

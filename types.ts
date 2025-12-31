@@ -1,10 +1,10 @@
-export type TrackType = 'GA4' | 'GTM' | 'Meta';
+export type TrackType = 'GA4' | 'GTM' | 'Meta' | 'Console';
 
 export interface TrackingEvent {
   id: string;
   timestamp: number;
   type: TrackType;
-  command: string; // e.g., 'config', 'event', 'push', 'track'
+  command: string; // e.g., 'config', 'event', 'push', 'track', 'log'
   args: any[]; // The arguments passed to the function
 }
 

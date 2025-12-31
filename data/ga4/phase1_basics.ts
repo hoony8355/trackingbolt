@@ -210,14 +210,26 @@ gtag('config', 'ID', {
 
 이때 사용하는 명령어가 \`event\` 입니다.
 가장 기본이 되는 \`page_view\` 신호를 수동으로 보내봅시다.
-수동으로 보내면 좋은 점은, \`page_title\`(페이지 제목) 같은 상세 정보를 내 마음대로 붙여서 보낼 수 있다는 점입니다.
+
+### 🔑 문법: 여러 정보를 한 번에 보내기
+이벤트 이름 뒤에 **중괄호 \`{ }\`**를 열고, 상세 정보를 담을 수 있습니다.
+정보가 여러 개일 때는 **쉼표 \`,\`**로 구분합니다.
+
+\`\`\`javascript
+gtag('event', 'page_view', {
+  page_title: '장바구니',        // 첫 번째 정보
+  page_referrer: 'https://nav.er' // 두 번째 정보 (쉼표 필수!)
+});
+\`\`\`
 
 ---
 
 ### 📝 실습 가이드
 1. 자동 수집 끄기 설정은 이미 되어있습니다.
 2. \`event\` 명령어를 사용해 \`page_view\`를 직접 전송하세요.
-3. 파라미터(상세정보)로 제목과 주소를 함께 보내세요.
+3. 파라미터로 다음 두 가지 정보를 함께 보내세요.
+    *   **page_title**: '겨울 코트 특가전'
+    *   **page_referrer**: 'https://naver.com'
     `,
     initialCode: `  // 1. 자동 수집 끄기 (작성됨)
   gtag('config', 'G-TRACK-DEMO', { send_page_view: false });
@@ -237,7 +249,7 @@ gtag('config', 'ID', {
       },
       {
         id: 'problem2',
-        description: "파라미터 포함: page_title='겨울 코트 특가전'",
+        description: "파라미터1: page_title='겨울 코트 특가전'",
         validate: (events) => {
           const pv = findGa4Event(events, 'event', 'page_view');
           const args = pv?.args[1] || {};
@@ -246,12 +258,27 @@ gtag('config', 'ID', {
 
           return { 
             passed: true, 
-            message: "성공: 상세 정보를 포함한 수동 전송 완료." 
+            message: "성공" 
+          };
+        }
+      },
+      {
+        id: 'problem3',
+        description: "파라미터2: page_referrer='https://naver.com'",
+        validate: (events) => {
+          const pv = findGa4Event(events, 'event', 'page_view');
+          const args = pv?.args[1] || {};
+          
+          if (args.page_referrer !== 'https://naver.com') return { passed: false, message: "page_referrer가 요구사항과 다릅니다. (쉼표 확인)" };
+
+          return { 
+            passed: true, 
+            message: "성공" 
           };
         }
       }
     ],
-    hint: "gtag('event', 'page_view', { page_title: '겨울 코트 특가전' });",
+    hint: "gtag('event', 'page_view', { \n  page_title: '겨울 코트 특가전', \n  page_referrer: 'https://naver.com' \n});",
     solutionCode: `  gtag('config', 'G-TRACK-DEMO', { send_page_view: false });
 
   gtag('event', 'page_view', {

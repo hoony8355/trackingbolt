@@ -136,7 +136,10 @@ export class MockRuntime {
     // Mock Console
     const console = {
       log: (...args: any[]) => {
-        this.consoleLogs.push(args.map(a => String(a)).join(' '));
+        const msg = args.map(a => String(a)).join(' ');
+        this.consoleLogs.push(msg);
+        // Treat console logs as trackable events for validation
+        this.logEvent('Console', 'log', args);
       },
       warn: (...args: any[]) => {},
       error: (...args: any[]) => {}
