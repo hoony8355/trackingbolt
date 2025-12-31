@@ -142,8 +142,8 @@ const LessonView: React.FC<LessonViewProps> = ({ lesson, onComplete }) => {
     };
   }
 
-  // Combine schemas
-  const combinedSchema = [breadcrumbSchema, articleSchema];
+  // Combine schemas with explicit type definition to handle heterogeneous schemas
+  const combinedSchema: Record<string, any>[] = [breadcrumbSchema, articleSchema];
   if (faqSchema) combinedSchema.push(faqSchema);
 
   return (

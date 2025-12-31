@@ -182,8 +182,16 @@ const App: React.FC = () => {
         </div>
         
         {/* Footer */}
-        <div className="p-4 border-t border-gray-700 text-[10px] text-gray-600 text-center uppercase tracking-wider bg-gray-900">
-          &copy; TrackingBolt
+        <div className="p-4 border-t border-gray-700 bg-gray-900 text-center">
+          <p className="text-[10px] text-gray-600 uppercase tracking-wider mb-2">
+            &copy; TrackingBolt
+          </p>
+          <div className="text-[10px] text-gray-500">
+            제안 및 개선 : <br/>
+            <a href="mailto:hale7292@gmail.com" className="hover:text-gray-300 transition-colors underline decoration-gray-700 underline-offset-2">
+              hale7292@gmail.com
+            </a>
+          </div>
         </div>
       </div>
 

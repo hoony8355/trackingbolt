@@ -42,6 +42,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartTrack }) => {
             마케터와 개발자를 위한 실전 트래킹 학습 플랫폼.<br/>
             <span className="font-semibold text-blue-600">GA4, GTM, Meta Pixel</span> 코드를 직접 작성하고 검증하세요.
           </p>
+          
+          {/* Update Notice */}
+          <div className="pt-2">
+            <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500 border border-gray-200">
+              🚧 GTM, Meta 트랙은 26년 1월 중 업데이트 예정입니다
+            </span>
+          </div>
         </div>
 
         {/* Tracks Grid */}
@@ -65,7 +72,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartTrack }) => {
           </div>
 
           {/* GTM Card */}
-          <div className="group bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+          <div className="group bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col opacity-75">
             <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
               🏷️
             </div>
@@ -75,14 +82,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartTrack }) => {
             </p>
             <button 
               onClick={() => onStartTrack('GTM')}
-              className="w-full py-2.5 px-4 bg-blue-50 text-blue-700 font-bold rounded-lg hover:bg-blue-600 hover:text-white transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 bg-gray-100 text-gray-500 font-bold rounded-lg cursor-not-allowed hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
+              title="26년 1월 업데이트 예정"
             >
-              GTM 학습하기 <span>→</span>
+              오픈 예정 <span>🔒</span>
             </button>
           </div>
 
           {/* Meta Card */}
-          <div className="group bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+          <div className="group bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col opacity-75">
             <div className="h-12 w-12 bg-indigo-100 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
               ♾️
             </div>
@@ -92,9 +100,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartTrack }) => {
             </p>
             <button 
               onClick={() => onStartTrack('Meta')}
-              className="w-full py-2.5 px-4 bg-indigo-50 text-indigo-700 font-bold rounded-lg hover:bg-indigo-600 hover:text-white transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 bg-gray-100 text-gray-500 font-bold rounded-lg cursor-not-allowed hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
+              title="26년 1월 업데이트 예정"
             >
-              Pixel 학습하기 <span>→</span>
+              오픈 예정 <span>🔒</span>
             </button>
           </div>
 
