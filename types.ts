@@ -36,6 +36,9 @@ export interface Lesson {
   
   tasks: Task[];
   solutionCode?: string;
+
+  // External Links
+  references?: { label: string; url: string; }[];
 }
 
 export interface RuntimeContext {

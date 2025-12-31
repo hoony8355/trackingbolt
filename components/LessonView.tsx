@@ -112,6 +112,36 @@ const LessonView: React.FC<LessonViewProps> = ({ lesson, onComplete }) => {
             >
               {lesson.description}
             </ReactMarkdown>
+
+            {/* References Section */}
+            {lesson.references && lesson.references.length > 0 && (
+              <div className="mt-12 pt-6 border-t border-gray-200">
+                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">📚 참고 공식 문서 (Google Help)</h4>
+                <ul className="space-y-2 list-none p-0 m-0">
+                  {lesson.references.map((ref, idx) => (
+                    <li key={idx} className="m-0 p-0">
+                      <a 
+                        href={ref.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-2 p-2 rounded hover:bg-white hover:shadow-sm border border-transparent hover:border-gray-200 transition-all no-underline"
+                      >
+                         <div className="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                         </div>
+                         <div className="flex flex-col">
+                            <span className="text-sm font-semibold text-gray-800 group-hover:text-blue-700">{ref.label}</span>
+                            <span className="text-[10px] text-gray-400 font-mono truncate max-w-[200px]">{new URL(ref.url).hostname}</span>
+                         </div>
+                         <div className="ml-auto opacity-0 group-hover:opacity-100 text-gray-400">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                         </div>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -8,30 +8,26 @@ export const ga4Phase4: Lesson[] = [
   {
     id: 'ga4-p4-purchase-basic',
     track: 'GA4',
-    title: '16. 트래킹의 꽃, 구매 (Purchase)',
+    title: '16. 영수증 번호 챙기기 (Purchase)',
     description: `
-### 📘 개념 학습: 결제는 단 한 번만!
-\`purchase\` 이벤트는 회사 매출과 직결되므로 가장 신중하게 다뤄야 합니다.
-가장 흔한 사고는 사용자가 **결제 완료 페이지를 새로고침** 할 때마다 매출이 중복으로 잡히는 것입니다. (매출 1억이 2억으로 뻥튀기! 😱)
+### 📘 개념 학습: 매출 뻥튀기 방지법
+사용자가 **"결제 완료" 페이지에서 새로고침**을 하면 어떻게 될까요?
+코드가 또 실행되면서 매출 5만 원이 10만 원, 15만 원으로 계속 중복되어 잡힐 수 있습니다.
 
-이를 막기 위해 GA4는 **\`transaction_id\`(거래 고유 ID)**를 요구합니다.
-GA4는 이미 수집된 \`transaction_id\`가 또 들어오면, "아, 이건 아까 받은 거네" 하고 **자동으로 무시(Deduplication)**합니다.
+이걸 막으려면 GA4에게 "**이건 영수증 번호 12345번 거래야**" 라고 알려줘야 합니다.
+GA4는 같은 영수증 번호(\`transaction_id\`)가 또 들어오면 "아, 아까 처리한 거네" 하고 무시합니다.
 
-**개발자 체크포인트:**
-*   DB의 주문번호(Order ID)를 \`transaction_id\`로 사용하세요.
-*   절대로 난수를 매번 새로 생성해서 넣으면 안 됩니다. (새로고침 할 때마다 새로운 주문으로 인식됨)
+**핵심 규칙:**
+*   \`purchase\` 이벤트에는 반드시 \`transaction_id\`(주문번호)가 있어야 한다.
 
 ---
 
 ### 🎯 실습 가이드
-구매 완료 페이지에 도달했습니다. 매출 확정 신호를 보내세요.
+매출 확정 신호를 보내세요.
 
 1. 이벤트명: \`purchase\`
-2. **필수 파라미터 3대장**:
-   * \`transaction_id\`: \`'ORDER_12345'\`
-   * \`value\`: \`59000\`
-   * \`currency\`: \`'KRW'\`
-3. (이번 실습에서는 items 배열은 생략하거나 비워도 좋습니다)
+2. 주문번호: \`transaction_id: 'ORDER_12345'\`
+3. 금액: \`value: 59000\`
     `,
     initialCode: `  gtag('config', 'G-TRACK-DEMO');
 
@@ -42,7 +38,7 @@ GA4는 이미 수집된 \`transaction_id\`가 또 들어오면, "아, 이건 아
     tasks: [
       {
         id: 'step16_tid',
-        description: "transaction_id 포함 (중복 방지 핵심)",
+        description: "transaction_id (주문번호) 필수 포함",
         validate: (events) => {
           const evt = findGa4Event(events, 'purchase');
           const tid = evt?.args[1]?.transaction_id;
@@ -73,14 +69,14 @@ GA4는 이미 수집된 \`transaction_id\`가 또 들어오면, "아, 이건 아
   {
     id: 'ga4-p4-purchase-items',
     track: 'GA4',
-    title: '17. [심화] 복합 구매 추적 (Multi Items)',
+    title: '17. [심화] 여러 개 샀을 때 (Multi Items)',
     description: `
 ### 📘 개념 학습: 장바구니 털기
 현실세계에서 사용자는 한 번에 여러 상품을 구매합니다.
-양말(5,000원)과 코트(59,000원)를 샀다면, \`value\`는 합계인 64,000원이 되어야 하고, \`items\` 배열에는 두 개의 객체가 들어가야 합니다.
+양말(5,000원)과 코트(59,000원)를 샀다면, **총 결제 금액**(\`value\`)은 **합계인 64,000원**이 되어야 합니다.
 
-데이터 정합성(Consistency)을 위해:
-**총합(value) = 각 상품 가격(price) × 수량(quantity)의 합** 이어야 합니다.
+만약 총 금액은 64,000원인데, 상품 목록(\`items\`)에는 양말 하나만 들어있다면?
+데이터가 앞뒤가 안 맞게 되어 신뢰도가 떨어집니다.
 
 ---
 
